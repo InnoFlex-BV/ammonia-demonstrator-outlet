@@ -9,23 +9,23 @@ mqtt_client = create_client()
 mqtt_client.loop_start()
 
 """ create objects """
-fan_in = None
+fan_out = None
 
 
 
 try:
 
     """  initializations of devices """
-    fan_in = FanControll(slave_address=4, mqtt_topic="master/inlet/fan_in", client = mqtt_client)
-    fan_in.fan_initialzation()
+    fan_out = FanControll(slave_address=4, mqtt_topic="master/outlet/fan_out", client = mqtt_client)
+    fan_out.fan_initialzation()
     time.sleep(1)
 
 
     """  start multi thread """
     tasks = [
-        {"func": lambda: read_gas(client=mqtt_client), "interval": 2, "next_run": 0},
-        {"func": lambda: read_HG803(client=mqtt_client), "interval": 3, "next_run": 0},
-        {"func": fan_in.fan_control, "interval": 5, "next_run": 0},
+        # {"func": lambda: read_gas(client=mqtt_client), "interval": 2, "next_run": 0},
+        # {"func": lambda: read_HG803(client=mqtt_client), "interval": 3, "next_run": 0},
+        {"func": fan_out.fan_control, "interval": 5, "next_run": 0},
     ]
 
 
@@ -45,9 +45,9 @@ except Exception as e:
 
 finally:
     # cleanup all devices in RS485
-    if fan_in is not None:
+    if fan_out is not None:
         try:
-            fan_in.fan_stop()
+            fan_out.fan_stop()
         except Exception as e:
             print(f"Error stopping fan: {e}")
 

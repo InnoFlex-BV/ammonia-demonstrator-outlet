@@ -1,5 +1,5 @@
 import serial, time
-from common_config import calc_crc
+from calculate_CRC import calc_crc
 
 def build_read_cmd(addr):
     frame = bytearray([addr, 0x03, 0x00, 0x00, 0x00, 0x01])
@@ -7,16 +7,15 @@ def build_read_cmd(addr):
     return frame
 
 
-baudrates = [9600]
+baudrates = [4800,9600,19200, 38400]
 
 
 try:
     for baud in baudrates:
         print("Testing baud:", baud)
-        ser = serial.Serial("/dev/ttyUSB0", baud, timeout=1)
+        ser = serial.Serial("/dev/ttyACM0", baud, timeout=1)
 
-        for addr in list(range(1, 8)) + list(range(250, 256)):
-            #print(addr)
+        for addr in list(range(1, 249)) + list(range(250, 256)):
             cmd = build_read_cmd(addr)
 
             ser.reset_input_buffer()

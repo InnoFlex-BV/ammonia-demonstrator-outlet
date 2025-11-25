@@ -4,7 +4,7 @@ import time
 
 
 class FanControll:
-    def __init__(self, slave_address=4, mqtt_topic="master/inlet/fan_in", client = None):
+    def __init__(self, slave_address=4, mqtt_topic="master/outlet/fan_out", client = None):
         # create an object
         self.slave_address = slave_address
         self.device = None
@@ -35,7 +35,7 @@ class FanControll:
             time.sleep(0.25)    
             self.device.write_register(registeraddress=30, value=1, functioncode=6)
             time.sleep(0.25)
-            print("fan_in initialization finished. Current speed: 0")
+            print("fan_out initialization finished. Current speed: 0")
 
 
     def on_message(self, client, userdata, msg):
