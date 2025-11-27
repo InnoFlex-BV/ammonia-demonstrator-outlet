@@ -14,6 +14,6 @@ def read_sensor(client = None):
         time.sleep(0.1) # avoid conflict with other devices in RS485 communication
         temperature = data[0]/100 # sensor data type = magnified 100 times
         humidity = data[1]/100
-        client.publish("master/inlet/temperature", temperature)
-        client.publish("master/inlet/humidity", humidity)
+        client.publish("slave/outlet/temperature", temperature)
+        client.publish("slave/outlet/humidity", humidity)
         print(f"[ReadHG803] Temperature: {temperature} degree, Humidity: {humidity} %")
