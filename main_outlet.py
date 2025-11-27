@@ -25,7 +25,7 @@ try:
     """  start multi thread """
     tasks = [
         # {"func": lambda: read_gas(client=mqtt_client), "interval": 2, "next_run": 0},
-        # {"func": lambda: read_HG803(client=mqtt_client), "interval": 3, "next_run": 0},
+        {"func": lambda: read_HG803(client=mqtt_client), "interval": 3, "next_run": 0},
         {"func": lambda: read_flowmeter(client=mqtt_client), "interval":6, "next_run":0},
         {"func": fan_out.fan_control, "interval": 5, "next_run": 0},
     ]
