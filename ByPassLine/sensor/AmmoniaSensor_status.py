@@ -2,7 +2,7 @@ import minimalmodbus
 from time import sleep
 
 
-AmmoSensor = minimalmodbus.Instrument('/dev/ttyACM0', 7)
+AmmoSensor = minimalmodbus.Instrument('/dev/ttyACM0', 37) # or 38
 AmmoSensor.serial.baudrate = 9600
 AmmoSensor.serial.bytesize = 8
 AmmoSensor.serial.parity = minimalmodbus.serial.PARITY_NONE
