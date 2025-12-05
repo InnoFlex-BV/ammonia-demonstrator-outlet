@@ -2,7 +2,6 @@ import time
 from common_config import create_client, create_device
 from sensor.read_gas import read_sensor as read_gas
 from sensor.read_HG803 import read_sensor as read_HG803
-from ByPassLine.sensor.read_ammonia import read_sensor as read_ammonia
 from flowmeter.read_TROX import read_flowmeter
 from fan.fan_control import FanControll
 
@@ -11,8 +10,6 @@ mqtt_client = create_client()
 mqtt_client.loop_start()
 
 """ create objects """
-AmmoSensor1 = create_device(slave_address=37)
-AmmoSensor2 = create_device(slave_address=38)
 fan_out = None
 
 
@@ -29,8 +26,6 @@ try:
     tasks = [
         # {"func": lambda: read_gas(client=mqtt_client), "interval": 2, "next_run": 0},
         {"func": lambda: read_HG803(client=mqtt_client), "interval": 3, "next_run": 0},
-        {"func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1"), "interval": 3, "next_run": 0},
-        {"func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2"), "interval": 3, "next_run": 0},
         {"func": lambda: read_flowmeter(client=mqtt_client), "interval":6, "next_run":0},
         {"func": fan_out.fan_control, "interval": 5, "next_run": 0},
     ]
