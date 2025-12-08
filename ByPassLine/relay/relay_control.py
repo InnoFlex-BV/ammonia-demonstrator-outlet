@@ -77,6 +77,7 @@ class RelayControl:
         with self.lock:
             try:
                 strong_clear_RS485(self.relay)
+                self.relay_vacuum() # vacuum the by-pass line
                 for ch in range(3):
                     new_value = self.new_status[ch]
                     old_value = self.old_status[ch]
@@ -89,6 +90,15 @@ class RelayControl:
                 self.old_status = self.new_status
             except Exception as e:
                 print(f"Relay write error: {e}")
+
+
+    def relay_vacuum(self):
+        vacuum = [0,0,1]
+        for ch in range(3):
+            self.relay.write_bit(registeraddress=ch, value=vacuum[ch], functioncode=5)
+            time.sleep(0.3)
+        time.sleep(1)
+        print("By-pass Line has been vacuumed")
     
 
     def relay_close(self):
