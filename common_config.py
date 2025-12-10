@@ -9,7 +9,7 @@ serial_lock = threading.Lock()
 
 
 # initialize MQTT client
-broker_ip = "192.168.0.186"
+broker_ip = "192.168.0.214"
 common_client = mqtt.Client(client_id="OutletPi")
 common_client.connect(broker_ip, 1883, 60)
 

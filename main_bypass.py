@@ -8,9 +8,8 @@ mqtt_client = create_client()
 mqtt_client.loop_start()
 
 """ create objects """
-AmmoSensor1 = create_device(slave_address=37)
-AmmoSensor2 = create_device(slave_address=38)
-fan_out = None
+# AmmoSensor1 = create_device(slave_address=37)
+# AmmoSensor2 = create_device(slave_address=38)
 relay_bypass = None
 
 
@@ -25,8 +24,8 @@ try:
 
     """  start multi thread """
     tasks = [
-        {"func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1"), "interval": 3, "next_run": 0},
-        {"func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2"), "interval": 3, "next_run": 0},
+        # {"func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1"), "interval": 3, "next_run": 0},
+        # {"func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2"), "interval": 3, "next_run": 0},
         {"func": relay_bypass.relay_control, "interval":5, "next_run":0},
     ]
 

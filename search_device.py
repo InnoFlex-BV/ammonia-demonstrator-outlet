@@ -1,5 +1,6 @@
 import serial, time
 from calculate_CRC import calc_crc
+from common_config import strong_clear_RS485
 
 def build_read_cmd(addr):
     frame = bytearray([addr, 0x03, 0x00, 0x00, 0x00, 0x01])
@@ -7,7 +8,7 @@ def build_read_cmd(addr):
     return frame
 
 
-baudrates = [9600, 19200, 38400]
+baudrates = [9600, 19200]
 
 
 try:
@@ -15,7 +16,8 @@ try:
         print("Testing baud:", baud)
         ser = serial.Serial("/dev/ttyACM0", baud, timeout=1)
 
-        for addr in list(range(1, 249)) + list(range(250, 256)):
+        for addr in list(range(30, 40)) + list(range(250, 256)):
+            strong_clear_RS485()
             cmd = build_read_cmd(addr)
 
             ser.reset_input_buffer()

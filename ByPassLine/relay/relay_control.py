@@ -4,7 +4,6 @@ import struct
 import minimalmodbus
 import sys
 sys.path.append('/home/innoflex/ammonia-demonstrator-outlet')
-from calculate_CRC import calc_crc
 from common_config import create_client, create_device, clear_RS485, strong_clear_RS485, serial_lock
 
 
@@ -97,16 +96,17 @@ class RelayControl:
         for ch in range(3):
             self.relay.write_bit(registeraddress=ch, value=vacuum[ch], functioncode=5)
             time.sleep(0.3)
-        time.sleep(1)
+        time.sleep(3)
+        self.relay.write_bit(registeraddress=0x0002, value=False, functioncode=5)
+        time.sleep(0.2)
         print("By-pass Line has been vacuumed")
     
 
     def relay_close(self):
         with self.lock:
-            # strong_clear_RS485(self.relay)
-            # self.relay.write_bit(registeraddress=0, value=0, functioncode=5)
-            payload = struct.pack('>HHB', 0, 3, 1) + bytes([0x00])
-            self.relay._perform_command(functioncode=16, payload_to_slave=payload)
+            strong_clear_RS485(self.relay)
+            payload = struct.pack('>HHB', 0, 8, 1) + bytes([0x00])
+            self.relay._perform_command(functioncode=15, payload_to_slave=payload)
             print("[Bypass Relay] Relay OFF")
 
         self.client.loop_stop()
