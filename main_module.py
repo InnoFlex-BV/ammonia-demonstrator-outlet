@@ -45,7 +45,10 @@ try:
         now = time.time()
         for t in tasks:
             if now  >= t["next_run"]:
-                t["func"]()
+                try:
+                    t["func"]()
+                except Exception as e:
+                    print(f"Task {t['func'].__name__ } error: {e}")
                 t["next_run"] = now + t["interval"]
         time.sleep(0.01)
 
