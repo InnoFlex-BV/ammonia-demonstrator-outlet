@@ -1,7 +1,7 @@
 from common_config import create_device, create_client, clear_RS485, serial_lock
 import time
 
-def read_sensor(device, client = None, mqtt_topic=None):
+def read_sensor(device, client = None, mqtt_topic=None, label = "sensor"):
     if client is None:
         client = create_client()
     
@@ -13,6 +13,6 @@ def read_sensor(device, client = None, mqtt_topic=None):
     time.sleep(0.1)
     Ammo_concentration = values[4]/100
     client.publish(mqtt_topic, Ammo_concentration)
-    print(f"[ReadAmmonia] Ammonia concentration: {Ammo_concentration} ppm.")
+    print(f"[ReadAmmonia {label}] Ammonia concentration: {Ammo_concentration} ppm.")
 
 
