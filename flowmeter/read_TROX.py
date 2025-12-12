@@ -1,8 +1,8 @@
-from common_config import create_device, create_client, clear_RS485,serial_lock
+from common_config import create_client, clear_RS485,serial_lock
 import time
 
-def read_flowmeter(client = None):
-        TROX = create_device(slave_address=9)
+def read_flowmeter(device,client = None):
+        TROX = device
         if client is None:
                 client = create_client()
 
