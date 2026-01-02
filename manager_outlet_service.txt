@@ -1,0 +1,31 @@
+## just a back-up of manager_outlet_servie
+
+for replication, please create a file with following content in:
+innoflex@ammonia-outlet:/etc/systemd/system $ sudo nano manager_outlet.service
+
+"""
+
+[Unit]
+Description=OutletPi MQTT Manager
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/innoflex/ammonia-demonstrator-outlet/manager_outlet.py
+WorkingDirectory=/home/innoflex/ammonia-demonstrator-outlet
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=innoflex
+
+[Install]
+WantedBy=multi-user.target
+
+"""
+
+and run following code in terminal:
+
+sudo systemctl daemon-reload
+sudo systemctl restart manager_outlet.service 
+sudo systemctl status manager_outlet.service 
+
+the status should be active then

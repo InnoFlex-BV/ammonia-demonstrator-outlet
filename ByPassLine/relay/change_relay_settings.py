@@ -16,14 +16,15 @@ ser.reset_input_buffer()
 ser.reset_output_buffer()
 time.sleep(0.05)
 
-req_hex_1 = "00 10 00 00 00 01 02 00 23"   # broadcast change address to 35(hex=23)
+req_hex_1 = "00 10 00 00 00 01 02 00 19"   # broadcast change address to 25(hex=19)
 req_hex_2 = "00 03 00 00 00 01" # read device address
-req_hex_3 = "32 01 00 00 00 03" # read device status
+req_hex_3 = "19 01 00 00 00 03" # read device status
 req_hex_4 = "23 0F 00 00 00 08 01 FF" # turn on all relays
 req_hex_5 = "23 0F 00 00 00 08 01 00" # turn off all relays
-req_hex_6 = "23 05 00 00 FF 00" # turn on relay 1
-req_hex_7 = "23 05 00 00 00 00" # turn off relay 1
-request = hex_to_bytes(req_hex_5) # turn into bytes
+req_hex_6 = "19 05 00 00 FF 00" # turn on relay 1
+req_hex_7 = "19 05 00 00 00 00" # turn off relay 1
+req_hex_8 = "00 03 03 E9 00 01" # read device baudrate (not working yet)
+request = hex_to_bytes(req_hex_7) # turn into bytes
 request += calc_crc(request)
 
 print("Sending HEX:", request.hex(" ").upper())

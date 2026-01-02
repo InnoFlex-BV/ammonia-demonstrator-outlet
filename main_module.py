@@ -35,12 +35,12 @@ try:
 
     """  start multi thread """
     tasks = [
-        {"func": lambda: read_HG803(device=HG803_sensor, client=mqtt_client), "interval": 3, "next_run": 0},
-        {"func": lambda: read_flowmeter(device=TROX_flowmeter, client=mqtt_client), "interval":6, "next_run":0},
-        {"func": fan_out.fan_control, "interval": 5, "next_run": 0},
-        {"func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1", label="(inlet)"), "interval": 5, "next_run": 0},
-        {"func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2", label="(outlet)"), "interval": 5, "next_run": 0},
-        {"func": relay_bypass.relay_control, "interval":5, "next_run":0},
+        {"name": "HG803 Sensor", "func": lambda: read_HG803(device=HG803_sensor, client=mqtt_client), "interval": 3, "next_run": 0},
+        {"name": "Flowmeter", "func": lambda: read_flowmeter(device=TROX_flowmeter, client=mqtt_client), "interval":6, "next_run":0},
+        {"name": "Fan Control", "func": fan_out.fan_control, "interval": 5, "next_run": 0},
+        {"name": "Ammonia Sensor 1", "func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1", label="(inlet)"), "interval": 5, "next_run": 0},
+        {"name": "Ammonia Sensor 2", "func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2", label="(outlet)"), "interval": 5, "next_run": 0},
+        {"name": "Bypass-line Relay", "func": relay_bypass.relay_control, "interval":5, "next_run":0},
     ]
 
 
@@ -51,7 +51,7 @@ try:
                 try:
                     t["func"]()
                 except Exception as e:
-                    print(f"Task {t['func'].__name__ } error: {e}")
+                    print(f"Error in [{t['name']}]. Task {t['func'].__name__ } error: {e}")
                 t["next_run"] = now + t["interval"]
         time.sleep(0.01)
 
