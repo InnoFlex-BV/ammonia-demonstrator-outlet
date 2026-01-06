@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import subprocess
 import signal
-import os
+import socket
 import time
 
 
@@ -41,8 +41,21 @@ def on_connect(client, userdata, flags, rc):
 client = mqtt.Client(client_id="OutletPi_manager")
 client.on_connect = on_connect
 client.on_message = on_message
-
 client.will_set(topic_status, "OFFLINE", retain=True) # in case of that outlet_pi is not working
-client.connect(broker_ip, 1883, 60)
+
+
+"""Re-do if DNS or MQTT went wrong"""
+while True:
+    try:
+        print("Trying to connect to MQTT broker...")
+        client.connect(broker_ip, 1883, 60)
+        print("MQTT Connected")
+        break
+    except socket.gaierror:
+        print("DNS not ready.")
+    except Exception as e:
+        print(f"MQTT Connect failed: {e}")
+
+    time.sleep(5)
 
 client.loop_forever()
