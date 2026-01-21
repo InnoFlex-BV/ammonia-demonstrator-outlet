@@ -1,0 +1,24 @@
+import minimalmodbus
+from time import sleep
+
+
+device = minimalmodbus.Instrument('/dev/ttyACM0', 1)
+device.serial.baudrate = 9600
+device.serial.bytesize = 8
+device.serial.parity = minimalmodbus.serial.PARITY_NONE
+device.serial.stopbits = 1
+device.serial.timeout = 1
+device.mode = minimalmodbus.MODE_RTU
+device.debug = True
+
+
+
+# change settings
+try:
+    # device.write_register(registeraddress=0x07d1, value=2, functioncode=6) # change baudrate
+    device.write_register(registeraddress=0x4000, value=2, functioncode=6) # change slave address to 2
+    sleep(0.1)
+except Exception as e:
+    print(f"{type(e).__name__}: {e}")
+
+print("\n Done.")

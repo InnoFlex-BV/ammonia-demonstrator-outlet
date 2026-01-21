@@ -4,7 +4,7 @@ from sensor.read_HG803 import read_sensor as read_HG803
 from flowmeter.read_TROX import read_flowmeter
 from fan.fan_control import FanControll
 from ByPassLine.sensor.read_ammonia import read_sensor as read_ammonia
-from ByPassLine.relay.relay_control import RelayControl
+from ByPassLine.MultiRelay.multi_relay_control import MultiRelayControl
 
 
 mqtt_client = create_client()
@@ -17,7 +17,7 @@ TROX_flowmeter = create_device(slave_address=9)
 
 AmmoSensor1 = create_device(slave_address=37)
 AmmoSensor2 = create_device(slave_address=38)
-relay_bypass = None
+multi_relay = None
 
 
 
@@ -27,8 +27,9 @@ try:
     fan_out = FanControll(slave_address=4, mqtt_topic="master/outlet/fan_out", client = mqtt_client)
     fan_out.fan_initialzation()
     time.sleep(1)
-    relay_bypass = RelayControl(slave_address=35, mqtt_topic="master/bypass/relay_bypass", client=mqtt_client)
-    relay_bypass.relay_initialization()
+    multi_relay = MultiRelayControl(slave_address=35, mqtt_topic="master/bypass/relay_bypass", client=mqtt_client)
+    multi_relay.relay_initialization()
+    multi_relay.motor_run()
     time.sleep(1)
     print("Outlet module: Initialization finished")
 
@@ -40,7 +41,7 @@ try:
         {"name": "Fan Control", "func": fan_out.fan_control, "interval": 5, "next_run": 0},
         {"name": "Ammonia Sensor 1", "func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1", label="(inlet)"), "interval": 5, "next_run": 0},
         {"name": "Ammonia Sensor 2", "func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2", label="(outlet)"), "interval": 5, "next_run": 0},
-        {"name": "Bypass-line Relay", "func": relay_bypass.relay_control, "interval":5, "next_run":0},
+        {"name": "Bypass-line Relay", "func": multi_relay.relay_control, "interval":5, "next_run":0},
     ]
 
 
@@ -69,9 +70,10 @@ finally:
         except Exception as e:
             print(f"Error stopping fan: {e}")
 
-    if relay_bypass is not None:
+    if multi_relay is not None:
         try:
-            relay_bypass.relay_close()
+            multi_relay.motor_stop()
+            multi_relay.relay_close()
         except Exception as e:
             print(f"Error closing relay bypass: {e}")
 
