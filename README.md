@@ -33,6 +33,9 @@ Git:
 in the linux terminal:
 sudo apt-get install -y git
 
+<b>TODO: change the installation of python scripts to use a virtual environment,
+the way described bellow is hard to update</b> 
+
 Pyserial (prerequisite of minimalmodbus):
 run these commands in terminal
 wget https://github.com/pyserial/pyserial/archive/refs/tags/v3.4.tar.gz
