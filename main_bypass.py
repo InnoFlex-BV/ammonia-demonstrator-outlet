@@ -27,22 +27,25 @@ try:
 
     """  start multi thread """
     tasks = [
-        # {"func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1", label="(inlet)"), "interval": 5, "next_run": 0},
-        # {"func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2", label="(outlet)"), "interval": 5, "next_run": 0},
-        {"func": multi_relay.relay_control, "interval":5, "next_run":0},
+        # {"name": "Ammonia Sensor 1", "func": lambda: read_ammonia(device=AmmoSensor1, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_1", label="(inlet)"), "interval": 5, "next_run": 0},
+        # {"name": "Ammonia Sensor 2", "func": lambda: read_ammonia(device=AmmoSensor2, client=mqtt_client, mqtt_topic="slave/bypass/ammonia_ppm_2", label="(outlet)"), "interval": 5, "next_run": 0},
+        {"name": "Bypass-line Relay", "func": multi_relay.relay_control, "interval": 5, "next_run": 0},
     ]
 
 
     while True:
         now = time.time()
         for t in tasks:
-            if now  >= t["next_run"]:
-                t["func"]()
+            if now >= t["next_run"]:
+                try:
+                    t["func"]()
+                except Exception as e:
+                    print(f"Error in [{t['name']}]: {e}")
                 t["next_run"] = now + t["interval"]
         time.sleep(0.01)
 
 except KeyboardInterrupt:
-    print("\n Exiting programm due to keyboard interrupt...")
+    print("\n Exiting program due to keyboard interrupt...")
 
 except Exception as e:
     print(f"\nExiting program due to error: {e}")

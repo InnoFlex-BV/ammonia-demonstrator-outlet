@@ -25,7 +25,7 @@ try:
 
     """  initializations of devices """
     fan_out = FanControll(slave_address=4, mqtt_topic="master/outlet/fan_out", client = mqtt_client)
-    fan_out.fan_initialzation()
+    fan_out.fan_initialization()
     time.sleep(1)
     multi_relay = MultiRelayControl(slave_address=35, mqtt_topic="master/bypass/relay_bypass", client=mqtt_client)
     multi_relay.relay_initialization()
@@ -57,7 +57,7 @@ try:
         time.sleep(0.01)
 
 except KeyboardInterrupt:
-    print("\n Exiting programm due to keyboard interrupt...")
+    print("\n Exiting program due to keyboard interrupt...")
 
 except Exception as e:
     print(f"\nExiting program due to error: {e}")

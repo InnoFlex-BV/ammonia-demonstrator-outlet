@@ -1,3 +1,20 @@
+Ammonia Demonstrator Outlet Module
+
+## Recent Changes (2026-01-29)
+
+### Bug Fixes
+- Fixed typo `fan_initialzation` -> `fan_initialization` in fan/fan_control.py, main_module.py, main_outlet.py
+- Fixed typo `programm` -> `program` in all main files
+- Fixed critical bug in main_outlet.py: added missing device parameters for HG803 sensor and TROX flowmeter
+
+### Improvements
+- Added error handling for task execution in main_outlet.py and main_bypass.py (prevents single task failure from crashing entire program)
+- Added `"name"` field to tasks in main_outlet.py and main_bypass.py for better error reporting
+
+---
+
+## Installation
+
 Websites for instruction of installations on the Raspberry Pi
 
 Node-red:

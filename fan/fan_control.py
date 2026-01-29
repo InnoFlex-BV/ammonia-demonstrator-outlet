@@ -24,7 +24,7 @@ class FanControll:
         self.client.subscribe(self.topic)
 
 
-    def fan_initialzation(self):
+    def fan_initialization(self):
         self.device = create_device(self.slave_address)
         
         # clear_RS485(self.device)
